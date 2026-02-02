@@ -106,7 +106,7 @@ Propiedades de conexion para ejecutar `init.sql`:
 - User: `sa`
 - Password: `P4ssw0rd*`
 - Database: `redarbor`
-- Script path: `database\init.sql`
+- Script: `init.sql`
 - TrustServerCertificate: `true`,
 - Encrypt: `false`
 
