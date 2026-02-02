@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/database/">
+    <File Path="init.sql" />
+  </Folder>
+  <Folder Name="/docker/" />
+  <Folder Name="/src/">
+    <File Path=".gitignore" />
+    <Project Path="Redarbor.Test.Api/Redarbor.Test.Api.csproj" Id="4d048bc6-f90d-42f8-ad60-e990706da451" />
+    <Project Path="Redarbor.Test.Application/Redarbor.Test.Application.csproj" Id="b12a3ba6-3454-4025-88ee-d85efeb02aeb" />
+    <Project Path="Redarbor.Test.Domain/Redarbor.Test.Domain.csproj" Id="b8444a24-7a5e-419a-9e4d-9d91ec362da7" />
+    <Project Path="Redarbor.Test.Infrastructure/Redarbor.Test.Infrastructure.csproj" Id="0a059e49-e3eb-43db-a5b3-0204d568b2c0" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="IntegrationTests/IntegrationTests.csproj" Id="f80c7a2e-15a4-478a-925e-d8e248f49573" />
+    <Project Path="Redarbor.Test.UnitTests/Redarbor.Test.UnitTests.csproj" Id="c9635f91-b631-4278-9c3c-82e88f6e203a" />
+  </Folder>
+</Solution>
