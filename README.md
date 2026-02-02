@@ -10,14 +10,6 @@ API RESTful para gestión de empleados construida con .NET 8, siguiendo principi
 - **SOLID** principles
 - **OAuth2/JWT** para autenticación
 
-## 🚀 Inicio Rápido
-
-### Prerrequisitos
-
-- .NET 8 SDK
-- SQL Server
-- Docker (opcional)
-
 ## 📝 Endpoints
 
 ### Autenticación
@@ -34,16 +26,6 @@ API RESTful para gestión de empleados construida con .NET 8, siguiendo principi
 - **PUT** `/api/redarbor/{id}` - Actualizar empleado
 - **DELETE** `/api/redarbor/{id}` - Eliminar empleado
 
-## 🧪 Testing
-
-```bash
-# Ejecutar tests unitarios
-dotnet test tests/Redarbor.Test.UnitTests
-
-# Ejecutar tests de integración
-dotnet test tests/IntegrationTests
-```
-
 ## 📦 Paquetes Principales
 
 - MediatR - CQRS implementation
@@ -58,6 +40,14 @@ dotnet test tests/IntegrationTests
 - JWT tokens con expiración
 - Validación de inputs con FluentValidation
 - CORS configurado
+
+## 🚀 Inicio Rápido
+
+### Prerrequisitos
+
+- .NET 8 SDK
+- SQL Server
+- Docker (opcional)
 
 ### Ejecución Local
 
@@ -121,6 +111,16 @@ Propiedades de conexion para ejecutar `init.sql`:
 - Encrypt: `false`
 
 ---
+
+## 🧪 Testing
+
+```bash
+# Ejecutar tests unitarios
+dotnet test tests/Redarbor.Test.UnitTests
+
+# Ejecutar tests de integración
+dotnet test tests/IntegrationTests
+```
 
 Despues de completar los pasos anteriores, y si nada fallo, Podras probar y ejecutar los endpoints del api.
 
