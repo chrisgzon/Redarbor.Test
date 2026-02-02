@@ -116,10 +116,10 @@ Propiedades de conexion para ejecutar `init.sql`:
 
 ```bash
 # Ejecutar tests unitarios
-dotnet test tests/Redarbor.Test.UnitTests
+dotnet test Redarbor.Test.UnitTests
 
 # Ejecutar tests de integración
-dotnet test tests/IntegrationTests
+dotnet test IntegrationTests
 ```
 
 Despues de completar los pasos anteriores, y si nada fallo, Podras probar y ejecutar los endpoints del api.
