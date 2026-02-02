@@ -1,6 +1,326 @@
-@Redarbor.Test.Api_HostAddress = http://localhost:5236
+# RedArbor API - HTTP Testing File
+# ============================================
+# This file contains all API endpoints for testing
+# Use with Visual Studio, VS Code (REST Client extension), or JetBrains Rider
+# ============================================
 
-GET {{Redarbor.Test.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+# ============================================
+# VARIABLES
+# ============================================
+@baseUrl = http://localhost:7262
+@apiUrl = {{baseUrl}}/api
+@contentType = application/json
+
+# Variables that will be set from responses
+@authToken = 
+@refreshToken = 
+@employeeId = 
+
+# ============================================
+# AUTHENTICATION ENDPOINTS
+# ============================================
+### 1. Login - Authenticate User
+# @name login
+POST {{apiUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### Extract tokens from login response
+@authToken = {{login.response.body.token}}
+@refreshToken = {{login.response.body.refreshToken}}
+
+###
+
+### 2. Login - With test user
+# @name loginTestUser
+POST {{apiUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "guest",
+  "password": "guest123"
+}
+
+###
+
+### 3. Login - Invalid credentials (should fail)
+POST {{apiUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "invaliduser",
+  "password": "wrongpassword"
+}
+
+###
+
+### 4. Login - Missing password (should fail)
+POST {{apiUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "admin"
+}
+
+### 5. Refresh Token - Get new access token
+# @name refreshToken
+POST {{apiUrl}}/auth/refresh
+Content-Type: {{contentType}}
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+###
+
+### 6. Validate Token - Check if token is valid
+POST {{apiUrl}}/auth/validate
+Content-Type: {{contentType}}
+
+{
+  "token": "{{authToken}}"
+}
+
+###
+
+### 7. Get Current User Info
+GET {{apiUrl}}/auth/me
+Authorization: Bearer {{authToken}}
+
+###
+
+# ============================================
+# EMPLOYEE ENDPOINTS
+# ============================================
+
+### 9. Get All Employees
+# @name getAllEmployees
+GET {{apiUrl}}/redarbor
+Authorization: Bearer {{authToken}}
+
+###
+
+### 10. Get Employee by ID
+# @name getEmployeeById
+GET {{apiUrl}}/redarbor/1
+Authorization: Bearer {{authToken}}
+
+###
+
+### 11. Get Employee by ID - Not Found (should return 404)
+GET {{apiUrl}}/redarbor/99999
+Authorization: Bearer {{authToken}}
+
+###
+
+### 12. Create New Employee - Complete
+# @name createEmployee
+POST {{apiUrl}}/redarbor
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "companyId": 1,
+  "createdOn": "2024-01-15T10:30:00",
+  "deletedOn": null,
+  "email": "john.doe@example.com",
+  "fax": "555-0123",
+  "name": "John Doe",
+  "lastlogin": null,
+  "password": "SecurePass123",
+  "portalId": 1,
+  "roleId": 3,
+  "statusId": 1,
+  "telephone": "555-9876",
+  "updatedOn": "2024-01-15T10:30:00",
+  "username": "johndoe"
+}
+
+### Extract employee ID from create response
+@employeeId = {{createEmployee.response.body.id}}
+
+###
+
+### 13. Create New Employee - Minimal (only required fields)
+# @name createEmployeeMinimal
+POST {{apiUrl}}/redarbor
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "companyId": 1,
+  "email": "jane.smith@example.com",
+  "password": "JanePass456",
+  "portalId": 1,
+  "roleId": 3,
+  "statusId": 4,
+  "username": "janesmith"
+}
+
+###
+
+### 14. Create Employee - Missing Required Field (should fail)
+POST {{apiUrl}}/redarbor
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "companyId": 1,
+  "email": "test@test.com",
+  "password": "test123",
+  "portalId": 1,
+  "roleId": 3,
+  "statusId": 1
+  // Missing username - should return validation error
+}
+
+###
+
+### 15. Create Employee - Invalid Email (should fail)
+POST {{apiUrl}}/redarbor
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "companyId": 1,
+  "email": "invalid-email",
+  "password": "test123",
+  "portalId": 1,
+  "roleId": 3,
+  "statusId": 1,
+  "username": "testuser"
+}
+
+###
+
+### 16. Create Employee - Duplicate Email (should fail if email exists)
+POST {{apiUrl}}/redarbor
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "companyId": 1,
+  "email": "admin@redarbor.com",
+  "password": "test123",
+  "portalId": 1,
+  "roleId": 3,
+  "statusId": 1,
+  "username": "duplicateuser"
+}
+
+###
+
+### 17. Create Employee - Duplicate Username (should fail if username exists)
+POST {{apiUrl}}/redarbor
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "companyId": 1,
+  "email": "unique@example.com",
+  "password": "test123",
+  "portalId": 1,
+  "roleId": 3,
+  "statusId": 1,
+  "username": "admin"
+}
+
+###
+
+### 18. Update Employee - Complete
+PUT {{apiUrl}}/redarbor/{{employeeId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "id": {{employeeId}},
+  "companyId": 1,
+  "email": "john.doe.updated@example.com",
+  "password": "NewSecurePass456",
+  "portalId": 1,
+  "roleId": 2,
+  "statusId": 1,
+  "username": "johndoe_updated",
+  "name": "John Doe Updated",
+  "telephone": "555-1111",
+  "fax": "555-2222"
+}
+
+###
+
+### 19. Update Employee - Partial (only some fields)
+PUT {{apiUrl}}/redarbor/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "id": 1,
+  "companyId": 1,
+  "email": "admin@redarbor.com",
+  "password": "admin123",
+  "portalId": 1,
+  "roleId": 1,
+  "statusId": 1,
+  "username": "admin_updated",
+  "name": "System Administrator - Updated"
+}
+
+###
+
+### 20. Update Employee - ID Mismatch (should fail)
+PUT {{apiUrl}}/redarbor/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "id": 999,
+  "companyId": 1,
+  "email": "test@test.com",
+  "password": "test123",
+  "portalId": 1,
+  "roleId": 1,
+  "statusId": 1,
+  "username": "testuser"
+}
+
+###
+
+### 21. Update Employee - Non-existent ID (should return 404)
+PUT {{apiUrl}}/redarbor/99999
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "id": 99999,
+  "companyId": 1,
+  "email": "test@test.com",
+  "password": "test123",
+  "portalId": 1,
+  "roleId": 1,
+  "statusId": 1,
+  "username": "testuser"
+}
+
+###
+
+### 22. Delete Employee
+DELETE {{apiUrl}}/redarbor/{{employeeId}}
+Authorization: Bearer {{authToken}}
+
+###
+
+### 23. Delete Employee - Non-existent ID (should return 404)
+DELETE {{apiUrl}}/redarbor/99999
+Authorization: Bearer {{authToken}}
+
+###
+
+### 24. Verify Deletion - Get Deleted Employee (should return 404)
+GET {{apiUrl}}/redarbor/{{employeeId}}
+Authorization: Bearer {{authToken}}
 
 ###
