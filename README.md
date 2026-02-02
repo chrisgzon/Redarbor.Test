@@ -71,7 +71,7 @@ dotnet restore
 # 3. Actualizar connection string en appsettings.json
 
 # 4. Crear base de datos
-# ejecutar el script init.sql alojado en la carpeta database
+# ejecutar el script init.sql
 
 # 5. Ejecutar la API
 dotnet run --project src/Redarbor.Test.API
@@ -107,9 +107,9 @@ Database: `redarbor`
 
 ---
 
-### Run the `init.sql` script
+### Ejecutar `init.sql` script
 
-Connection properties for executing `init.sql`:
+Propiedades de conexion para ejecutar `init.sql`:
 
 - Host: `localhost`
 - Port: `1434`
@@ -122,7 +122,7 @@ Connection properties for executing `init.sql`:
 
 ---
 
-After completing the steps above, and if nothing failed, you can test the API and its endpoints.
+Despues de completar los pasos anteriores, y si nada fallo, Podras probar y ejecutar los endpoints del api.
 
 ### Datos de Prueba
 
